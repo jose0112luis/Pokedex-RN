@@ -9,7 +9,14 @@ const Stack = createStackNavigator();
 
 export const Navigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        cardStyle: {
+          backgroundColor: '#FFFFFF'
+        }
+      }}
+    >
       <Stack.Screen name='HomeScreen' component={ HomeScreen } />
       <Stack.Screen name='PokemonScreen' component={ PokemonScreen } />
     </Stack.Navigator>
