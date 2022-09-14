@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import ImageColors from 'react-native-image-colors';
+
 import { SimplePokemon } from '../interfaces/pokemonInterfaces';
 import { FadeInImage } from './FadeInImage';
 
@@ -11,11 +13,32 @@ interface Props {
 }
 
 export const PokemonCard = ( { pokemon }:Props ) => {
+
+  const [bgColor, setBgColor] = useState('grey');
+
+  useEffect(() => {
+    ImageColors.getColors( pokemon.picture, { fallback: 'grey' } )
+      .then( colors => {
+        
+        switch ( colors.platform ) {
+          case 'android':
+            setBgColor( colors.muted || 'grey' );
+            break;
+          case 'ios':
+            setBgColor( colors.background || 'grey' );
+          default:
+            throw new Error('Errror: Unexpected platform..')
+        }
+
+      });
+  }, [])
+
   return (
     <TouchableOpacity activeOpacity={ 0.9 }>
       <View style={{
         ...styles.cardContainer,
         width: windowWidth * 0.4,
+        backgroundColor: bgColor,
       }}>
         {/* Nombre del pokemon y su ID */}
         <View>
@@ -42,7 +65,7 @@ export const PokemonCard = ( { pokemon }:Props ) => {
 const styles = StyleSheet.create({
   cardContainer: {
     marginHorizontal: 10,
-    backgroundColor: 'red',
+    backgroundColor: 'grey',
     height: 120,
     marginBottom: 25,
     borderRadius: 10,
