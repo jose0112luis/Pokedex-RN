@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { usePokemonPaginated } from '../hooks/usePokemonPaginated';
 import { styles } from '../theme/appTheme';
+import { FadeInImage } from '../components/FadeInImage';
 
 export const HomeScreen = () => {
 
@@ -25,13 +26,13 @@ export const HomeScreen = () => {
         keyExtractor={ ( pokemon ) => pokemon.id }
         showsVerticalScrollIndicator={ false }
         renderItem={ ({ item, index }) => (
-          <>
-          <Text>{index} - {item.name}</Text>
-          <Image
-            source={{ uri: item.picture }}
+          // <>
+          // <Text>{index} - {item.name}</Text>
+          <FadeInImage
+            uri={ item.picture }
             style={{ width: 100, height: 100, }}
           />
-          </>
+          // </>
         )}
 
         //infinite scroll
