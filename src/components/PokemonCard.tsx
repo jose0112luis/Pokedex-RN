@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
 import ImageColors from 'react-native-image-colors';
@@ -15,23 +15,30 @@ interface Props {
 export const PokemonCard = ( { pokemon }:Props ) => {
 
   const [bgColor, setBgColor] = useState('grey');
+  const isMounted = useRef(true);  //si el componente está montado
 
   useEffect(() => {
-    ImageColors.getColors( pokemon.picture, { fallback: 'grey' } )
-      .then( colors => {
-        
-        switch ( colors.platform ) {
-          case 'android':
-            setBgColor( colors.muted || 'grey' );
-            break;
-          case 'ios':
-            setBgColor( colors.background || 'grey' );
-          default:
-            throw new Error('Errror: Unexpected platform..')
-        }
 
-      });
-  }, [])
+    ImageColors.getColors( pokemon.picture, { fallback: 'grey' } ) .then( colors => {
+      
+      if ( !isMounted.current ) return;
+      
+      switch ( colors.platform ) {
+        case 'android':
+          setBgColor( colors.muted || 'grey' );
+          break;
+        case 'ios':
+          setBgColor( colors.background || 'grey' );
+        default:
+          throw new Error('Errror: Unexpected platform..')
+      }
+    });
+
+    return () => {
+      isMounted.current = false;
+    }
+
+  }, []);
 
   return (
     <TouchableOpacity activeOpacity={ 0.9 }>
