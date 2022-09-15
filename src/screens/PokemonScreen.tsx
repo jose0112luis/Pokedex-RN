@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParams } from '../navigation/Navigation';
 import { FadeInImage } from '../components/FadeInImage';
 import { usePokemon } from '../hooks/usePokemon';
+import { PokemonDetail } from '../components/PokemonDetail';
 
 interface Props extends StackScreenProps<RootStackParams, 'PokemonScreen'> { }
 
@@ -43,8 +44,11 @@ export const PokemonScreen = ({ navigation, route }: Props) => {
         </TouchableOpacity>
 
         {/* Nombre del Pokemón */}
-        <Text style={{ ...styles.pokemonName, top: top +40 }}>
-          { name + '\n' }#{ id }
+        <Text style={{ ...styles.pokemonName }}>
+          { name }
+        </Text>
+        <Text style={{ ...styles.pokemonNumber, top: top + 10 }}>
+          #{ id }
         </Text>
 
         {/* Pokebola Blanca */}
@@ -62,12 +66,18 @@ export const PokemonScreen = ({ navigation, route }: Props) => {
       </View>
       
       {/* Detalles y Loading */}
-      <View style={ styles.loadingIndicator }>
-        <ActivityIndicator 
-          color={ color }
-          size={ 50 }
-        />
-      </View>
+      {
+        isLoading 
+          ? (
+            <View style={ styles.loadingIndicator }>
+              <ActivityIndicator 
+                color={ color }
+                size={ 50 }
+              />
+            </View>
+          )
+          : <PokemonDetail pokemon={ fullPokemon } />
+      }
 
     </View>
   );
@@ -75,11 +85,11 @@ export const PokemonScreen = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 370,
+    height: 300,
     zIndex: 999,
     alignItems: 'center',
-    borderBottomRightRadius: 1000,
-    borderBottomLeftRadius: 1000,
+    borderBottomRightRadius: 500,
+    borderBottomLeftRadius: 500,
   },
   btnBack: {
     position: 'absolute',
@@ -97,14 +107,23 @@ const styles = StyleSheet.create({
   pokemonName: {
     color: '#FFFFFC',
     fontSize: 40,
-    alignSelf: 'flex-start',
+    fontWeight: '600',
+    alignSelf: 'center',
+  }, 
+  pokemonNumber: {
+    color: '#FFFFFC',
+    fontSize: 40,
+    fontWeight: '400',
+    alignSelf: 'flex-start', 
     left: 20,
-  }, pokebola: {
-    width: 250,
-    height: 250,
-    bottom: -25,
+  }, 
+  pokebola: {
+    width: 220,
+    height: 220,
+    bottom: 10,
     opacity: 0.7,
-  },imgPokemon: {
+  },
+  imgPokemon: {
     width: 250,
     height: 250,
     position: 'absolute',
