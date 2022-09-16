@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Table, TableWrapper, Row, Rows, Col, Cell } from 'react-native-table-component';
 
 import { FullPokemon } from '../interfaces/pokemonInterfaces';
 import { FadeInImage } from './FadeInImage';
@@ -13,9 +14,7 @@ interface Props {
 export const PokemonDetail = ({ pokemon, color }: Props) => {
   return (
     <ScrollView 
-      style={{
-        ...StyleSheet.absoluteFillObject,  //toma todo el contenido de la pantalla no solo lo de su padre
-      }}
+      style={{ ...StyleSheet.absoluteFillObject }}  //toma todo el contenido de la pantalla no solo lo de su padre
       showsVerticalScrollIndicator={ false }
     >
       {/* Tipo del pokemón */}
@@ -26,10 +25,7 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
           {
             pokemon.types.map( ({ type }) => (
               <Text 
-                style={{
-                  ...styles.regularText,
-                  marginRight: 10,
-                }}
+                style={{ ...styles.regularText, marginRight: 10 }}
                 key={ type.name }
               >
                 { type.name }
@@ -39,18 +35,7 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
         </View>
 
         {/* Peso y Altura */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            backgroundColor: color,
-            marginHorizontal: 50,
-            marginTop: 15,
-            height: 80,
-            borderRadius: 20,
-          }}
-        >
+        <View style={{ ...styles.containerWH, backgroundColor: color }} >
           {/* Altura */}
           <View>
             <Text style={{ ...styles.title, marginTop: 0, color: '#FFF' }}>Altura</Text>
@@ -70,7 +55,6 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
         <Text style={ styles.title }>Sprites</Text>
       </View>   
       <ScrollView
-        // style={{ backgroundColor: 'red' }}
         horizontal={ true }
         showsHorizontalScrollIndicator={ false }
       >
@@ -87,10 +71,7 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
           {
             pokemon.abilities.map(({ ability }) => (
               <Text 
-                style={{ 
-                  ...styles.regularText,
-                  marginRight: 15,
-                }}
+                style={{ ...styles.regularText, marginRight: 15 }}
                 key={ ability.name }
               >
                 { ability.name }
@@ -107,10 +88,7 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
           {
             pokemon.moves.map(({ move }) => (
               <Text
-                style={{
-                  ...styles.regularText ,
-                  marginRight: 15,
-                }}
+                style={{ ...styles.regularText, marginRight: 15 }}
                 key={ move.name }
               >
                 { move.name }
@@ -123,45 +101,44 @@ export const PokemonDetail = ({ pokemon, color }: Props) => {
       {/* Stats */}
       <View style={ styles.container }>
         <Text style={ styles.title }>Puntos Base</Text>
-        <View >
+        <Table style={ styles.table }>
           {
             pokemon.stats.map(({ stat, base_stat }) => (
-              <View 
-                key={ stat.name }
-                style={{ flexDirection: 'row' }}
-              >
-                <Text
-                  style={{
-                    ...styles.regularText,
-                    marginRight: 15,
-                    width: 160,
-                  }}
+              <TableWrapper style={ styles.tblWrap } key={ stat.name+1.5 } >
+                <Row 
+                  data={[ stat.name ]} 
+                  style={{ ...styles.tblDato, backgroundColor: color+'75' }} 
+                  textStyle={{ color: '#000', fontSize: 18, fontWeight: '500', }} 
                   key={ stat.name }
-                >
+                  />
+                <Row 
+                  data={[ base_stat ]} 
+                  style={ styles.tblValor } 
+                  textStyle={{ color: '#000', fontSize: 18, alignSelf: 'center' }} 
+                  key={ stat.name+1 }
+                />
+              </TableWrapper>
+            ))
+          }
+        </Table>
+
+        {/* <View >
+          {
+            pokemon.stats.map(({ stat, base_stat }) => (
+              <View key={ stat.name } style={{ flexDirection: 'row' }} >
+                <Text style={{ ...styles.regularText, marginRight: 15, width: 160, }} key={ stat.name } >
                   { stat.name }
                 </Text>
-
-                <Text
-                  style={{
-                    ...styles.regularText,
-                    fontWeight: '500',
-                    color: '#000'
-                  }}
-                >
+                <Text style={{ ...styles.regularText, fontWeight: '500', color: '#000' }} >
                   { base_stat }
                 </Text>
               </View>
             ))
           }
-        </View>
+        </View> */}
 
         {/* Sprite Final */}
-        <View 
-          style={{
-            marginBottom: 25,
-            alignItems: 'center',
-          }}
-        >
+        <View style={{ marginBottom: 75, alignItems: 'center' }} >
           <FadeInImage uri={ pokemon.sprites.front_default } style={ styles.basicSprite } />
         </View>
 
@@ -189,5 +166,46 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: 5,
+  },
+  containerWH: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginHorizontal: 50,
+    marginTop: 15,
+    height: 80,
+    borderRadius: 20,
+  },
+  table: {
+    flex: 1, 
+    padding: 20, 
+  },
+  tblWrap: {
+    flexDirection: 'row', 
+    justifyContent:'center', 
+    width: 302,
+  },
+  tblDato: {
+    height: 35, 
+    width: 200, 
+    paddingHorizontal: 10, 
+    borderWidth: 1, 
+    color: '#FFF',
+  },
+  tblValor: {
+    height: 35, 
+    width: 100, 
+    borderWidth: 1, 
+    backgroundColor: '#EFEFEF',
+  },
+  txtTableTitle:{
+    color: '#000',
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  txtTableValue: {
+    color: '#000',
+    fontSize: 18,
+    alignSelf: 'center',
   }
 });
