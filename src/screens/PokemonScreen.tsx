@@ -76,7 +76,7 @@ export const PokemonScreen = ({ navigation, route }: Props) => {
               />
             </View>
           )
-          : <PokemonDetail pokemon={ fullPokemon } />
+          : <PokemonDetail pokemon={ fullPokemon } color={ color } />
       }
 
     </View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   pokebola: {
     width: 220,
     height: 220,
-    bottom: 10,
+    bottom: 25,
     opacity: 0.7,
   },
   imgPokemon: {

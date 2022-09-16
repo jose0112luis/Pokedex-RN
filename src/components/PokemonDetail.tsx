@@ -7,9 +7,10 @@ import { FadeInImage } from './FadeInImage';
 
 interface Props {
   pokemon: FullPokemon;
+  color?: string;
 }
 
-export const PokemonDetail = ({ pokemon }: Props) => {
+export const PokemonDetail = ({ pokemon, color }: Props) => {
   return (
     <ScrollView 
       style={{
@@ -17,10 +18,10 @@ export const PokemonDetail = ({ pokemon }: Props) => {
       }}
       showsVerticalScrollIndicator={ false }
     >
-      {/* Tipos y Peso del pokemón */}
+      {/* Tipo del pokemón */}
       <View style={{ ...styles.container, marginTop: 300 }}>
         {/* Types */}
-        <Text style={ styles.title }>Tipos</Text>
+        <Text style={ styles.title }>Tipo</Text>
         <View style={{ flexDirection: 'row' }}>
           {
             pokemon.types.map( ({ type }) => (
@@ -37,9 +38,31 @@ export const PokemonDetail = ({ pokemon }: Props) => {
           }
         </View>
 
-        {/* Peso */}
-        <Text style={ styles.title }>Peso</Text>
-        <Text style={ styles.regularText }>{ pokemon.weight } kg</Text>
+        {/* Peso y Altura */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            backgroundColor: color,
+            marginHorizontal: 50,
+            marginTop: 15,
+            height: 80,
+            borderRadius: 20,
+          }}
+        >
+          {/* Altura */}
+          <View>
+            <Text style={{ ...styles.title, marginTop: 0, color: '#FFF' }}>Altura</Text>
+            <Text style={{ ...styles.regularText, color: '#FFF' }}>{ pokemon.height / 10 } m</Text>
+          </View>
+
+          {/* Peso */}
+          <View>
+            <Text style={{ ...styles.title, marginTop: 0, color: '#FFF' }}>Peso</Text>
+            <Text style={{ ...styles.regularText, color: '#FFF' }}>{ pokemon.weight / 10 } kg</Text>
+          </View>
+        </View>
       </View>
 
       {/* Sprites */}
@@ -164,7 +187,7 @@ const styles = StyleSheet.create({
   },
   basicSprite: {
     width: 100,
-    height: 70,
+    height: 100,
     marginTop: 5,
   }
 });
