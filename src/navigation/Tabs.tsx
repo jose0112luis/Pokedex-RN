@@ -31,7 +31,7 @@ export const Tabs = () => {
       }}
     >
       <Tab.Screen 
-        name="HomeScreen" 
+        name="HomeScreen2" 
         component={ Tab1 } 
         options={{
           // tabBarLabel: 'Listado',

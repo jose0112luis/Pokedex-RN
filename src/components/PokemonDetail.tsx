@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
   },
   regularText: {
     fontSize: 18,
+    color: '#7C7C7C',
   },
   basicSprite: {
     width: 100,
