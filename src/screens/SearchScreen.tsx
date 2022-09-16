@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View, Platform, Text, FlatList, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,6 +8,7 @@ import { PokemonCard } from '../components/PokemonCard';
 import { SearchInput } from '../components/SearchInput';
 import { styles } from '../theme/appTheme';
 import { Loading } from '../components/Loading';
+import { SimplePokemon } from '../interfaces/pokemonInterfaces';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -15,6 +16,20 @@ export const SearchScreen = () => {
 
   const top = useSafeAreaInsets().top;
   const { isFetching, pokemonList } = usePokemonSearch();
+  const [pokeFiltered, setPokeFiltered] = useState<SimplePokemon[]>([]);
+  const [input, setInput] = useState('');
+
+  useEffect(() => {
+
+    if ( input.length === 0 ) {
+      return setPokeFiltered([]);
+    }
+
+    setPokeFiltered(
+      pokemonList.filter( poke => poke.name.toLowerCase().includes( input.toLowerCase() ) )
+    );
+
+  }, [ input ])
 
   if ( isFetching ) {
     return <Loading /> 
@@ -29,6 +44,7 @@ export const SearchScreen = () => {
     >
       {/* Barra de búsqueda */}
       <SearchInput 
+        onDebounce={ (value) => setInput(value) }
         style={{
           position: 'absolute',
           zIndex: 999,
@@ -38,7 +54,7 @@ export const SearchScreen = () => {
       />
 
       <FlatList 
-        data={ pokemonList }
+        data={ pokeFiltered }
         keyExtractor={ ( pokemon ) => pokemon.id }
         showsVerticalScrollIndicator={ false }
         numColumns={ 2 }
@@ -54,7 +70,7 @@ export const SearchScreen = () => {
               color: '#000',
             }}
           >
-            Pokedex
+            { input }
           </Text>
         )}
         
