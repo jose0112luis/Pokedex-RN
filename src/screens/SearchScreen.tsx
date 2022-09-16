@@ -25,9 +25,14 @@ export const SearchScreen = () => {
       return setPokeFiltered([]);
     }
 
-    setPokeFiltered(
-      pokemonList.filter( poke => poke.name.toLowerCase().includes( input.toLowerCase() ) )
-    );
+    if ( isNaN( Number(input) )) {  //si es texto
+      setPokeFiltered(
+        pokemonList.filter( poke => poke.name.toLowerCase().includes( input.toLowerCase() ) )
+      );
+    } else {  //si es un numero
+      const pokemonById = pokemonList.find( poke => poke.id === input);
+      setPokeFiltered( pokemonById ? [pokemonById] : [] );
+    }
 
   }, [ input ])
 
